@@ -1,22 +1,23 @@
-using MediatR;
-using MediatR.Example;
-using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 
+using Microsoft.EntityFrameworkCore;
+using MediatR.Infrastructure;
+using MediatR.Infrastructure.Data;
+using MediatR.Example.DependencyInjection;
+using MediatR.Domain.Interfaces.Features;
+using MediatR.Domain.Interfaces.Persistence;
+using MediatR.Example.Services;
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddDbContext<DBContext_App>(options =>
+  options.UseSqlServer(builder.Configuration.GetConnectionString("MainConnectionString")));
+builder.Services.AddScoped<IUnitofWORk, UnitOfWork>();
+builder.Services.AddTransient(typeof(IProductAppSerives), typeof(ProductAppServices));
+builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenaricRepository<>));
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(); 
-//builder.Services.AddMediatR(typeof(Program));
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
-builder.Services.AddSingleton<FakeDataStore>();
-var app = builder.Build();
+builder.Services.AddSwaggerGen();
+builder.Services.AddApplication();
 
-// Configure the HTTP request pipeline.
+var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

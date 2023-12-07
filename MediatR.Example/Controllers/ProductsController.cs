@@ -1,4 +1,6 @@
-﻿using MediatR.Example.Commands;
+﻿using MediatR.Domain.Entities;
+using MediatR.Domain.Interfaces;
+using MediatR.Example.Commands;
 using MediatR.Example.Query;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +13,14 @@ namespace MediatR.Example.Controllers
     {
         private readonly ISender _sender;
 
-        public ProductsController(ISender sender)=>_sender = sender;
+
+        public ProductsController(ISender sender)
+        {
+            _sender = sender;
+    
+
+
+        }
 
         [HttpGet]
         public async Task<ActionResult> GetProducts()
@@ -23,6 +32,7 @@ namespace MediatR.Example.Controllers
         [HttpPost]
         public async Task<ActionResult> Addproduct([FromBody]Product product)
         {
+
            var productToReturn = await _sender.Send(new AddProductCommand(product));
             return Ok(productToReturn);
         }
