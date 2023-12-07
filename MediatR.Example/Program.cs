@@ -11,8 +11,8 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<DBContext_App>(options =>
   options.UseSqlServer(builder.Configuration.GetConnectionString("MainConnectionString")));
 builder.Services.AddScoped<IUnitofWORk, UnitOfWork>();
-builder.Services.AddTransient(typeof(IProductAppSerives), typeof(ProductAppServices));
-builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenaricRepository<>));
+builder.Services.AddScoped(typeof(IProductAppSerives), typeof(ProductAppServices));
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenaricRepository<>));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddApplication();
