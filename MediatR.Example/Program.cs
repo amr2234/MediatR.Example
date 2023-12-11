@@ -1,29 +1,20 @@
 
-using Microsoft.EntityFrameworkCore;
-using MediatR.Infrastructure;
-using MediatR.Infrastructure.Data;
 using MediatR.Example.DependencyInjection;
-using MediatR.Domain.Interfaces.Features;
-using MediatR.Domain.Interfaces.Persistence;
-using MediatR.Example.Services;
+using MediatR.Example.Middleware;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
-builder.Services.AddDbContext<DBContext_App>(options =>
-  options.UseSqlServer(builder.Configuration.GetConnectionString("MainConnectionString")));
-builder.Services.AddScoped<IUnitofWORk, UnitOfWork>();
-builder.Services.AddScoped(typeof(IProductAppSerives), typeof(ProductAppServices));
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenaricRepository<>));
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddApplication();
+builder.Services.ServicesRegsiter(builder.Configuration);
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options => {
+        options.SwaggerEndpoint("/swagger/V1/swagger.json", "Product WebAPI");
+    });
 }
-
+app.UseStatusCodePagesWithReExecute("/error/{0}");
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseAuthorization();
 
 app.MapControllers();

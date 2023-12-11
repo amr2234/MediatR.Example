@@ -2,14 +2,14 @@
 using MediatR.Domain.Interfaces;
 using MediatR.Example.Commands;
 using MediatR.Example.Query;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MediatR.Example.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProductsController : ControllerBase
+    [Authorize]
+    public class ProductsController : BaseApiController
     {
         private readonly ISender _sender;
 

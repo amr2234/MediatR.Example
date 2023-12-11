@@ -20,15 +20,13 @@ namespace MediatR.Example.Handlers
             _Repo = Repo;
             _UnitofWORk=UnitofWORk;
                 
-           
-            
         }
         public async Task<Product> Handle(AddProductCommand request, CancellationToken cancellationToken)
         {
-           
 
             await _Repo.Add(request.product);
             await _UnitofWORk.CommitAsync();
+
             return request.product ;
 
         }

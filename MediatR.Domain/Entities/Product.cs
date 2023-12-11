@@ -1,8 +1,11 @@
-﻿namespace MediatR.Domain.Entities
+﻿
+
+using MediatR.Domain.Commen;
+
+namespace MediatR.Domain.Entities
 {
-    public class Product
+    public class Product:BaseClass
     {
-        public int Id { get; set; }
         public string ProductName { get; set; }
         public string ProductDescription { get; set; }
 

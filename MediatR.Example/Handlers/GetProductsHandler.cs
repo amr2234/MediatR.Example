@@ -7,17 +7,17 @@ namespace MediatR.Example.Handlers
 {
     public class GetProductsHandler : IRequestHandler<GetProductsQuery, IEnumerable<Product>>
     {
-        private readonly IProductAppSerives _Repo;
+        private readonly IProductAppSerives _ProductAppSerives;
 
-        public GetProductsHandler(IProductAppSerives Repo)
+        public GetProductsHandler(IProductAppSerives ProductAppSerives)
         {
-            _Repo = Repo;
+          _ProductAppSerives = ProductAppSerives;
 
 
         }
         public async Task<IEnumerable<Product>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
         {
-            return await _Repo.All();
+            return await _ProductAppSerives.All();
         }
     }
 }

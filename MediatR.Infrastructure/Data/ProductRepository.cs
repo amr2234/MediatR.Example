@@ -1,12 +1,6 @@
-﻿using MediatR.Domain.Entities;
-using MediatR.Domain.Interfaces.Features;
-using MediatR.Domain.Interfaces.Persistence;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR.Application.Interfaces;
+using MediatR.Domain.Entities;
+
 
 namespace MediatR.Infrastructure.Data
 {
