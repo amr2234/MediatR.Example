@@ -3,6 +3,7 @@ using MediatR.Domain.Interfaces;
 using MediatR.Example.Commands;
 using MediatR.Example.Query;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,8 +18,6 @@ namespace MediatR.Example.Controllers
         public ProductsController(ISender sender)
         {
             _sender = sender;
-    
-
 
         }
 
@@ -42,6 +41,19 @@ namespace MediatR.Example.Controllers
         {
            var product =  await _sender.Send(new GetProductbyIdQuery(id));
            return Ok(product);
+        }
+
+        [HttpPut("{id}", Name = "UpdateProduct")]
+        public async Task<ActionResult> Updateproduct([FromBody] Product product)
+        {
+
+            var UpdatedProduct = await _sender.Send(new UpdateProductCommand(product.id,product.ProductName,product.ProductDescription));
+            return Ok(UpdatedProduct);
+        }
+        [HttpDelete("{id}", Name = "DeleteProduct")]
+        public async Task<int> Deleteproduct(int id)
+        {
+            return await _sender.Send(new DeleteProductCommand { Id = id });
         }
 
     }

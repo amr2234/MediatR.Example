@@ -1,23 +1,24 @@
 ﻿using MediatR.Domain.Entities;
 using MediatR.Domain.Interfaces.Features;
 using MediatR.Example.Query;
+using MediatR.Example.Services;
 using MediatR.Infrastructure.Data;
 
 namespace MediatR.Example.Handlers
 {
-    public class GetproductbyIdhandler : IRequestHandler<GetProductbyIdQuery,Product>
+    public class GetproductbyIdhandler : IRequestHandler<GetProductbyIdQuery, Product>
     {
-        private readonly IProductAppSerives _Repo;
+        private readonly IProductAppSerives _ProductAppSerives;
 
-        public GetproductbyIdhandler(IProductAppSerives Repo)
+        public GetproductbyIdhandler(IProductAppSerives ProductAppSerives)
         {
-            _Repo = Repo;
+            _ProductAppSerives = ProductAppSerives;
 
 
         }
         public async Task<Product> Handle(GetProductbyIdQuery request, CancellationToken cancellationToken)
         {
-         return  await _Repo.GetById(request.id);
+            return await _ProductAppSerives.GetById(request.id);
         }
     }
 }

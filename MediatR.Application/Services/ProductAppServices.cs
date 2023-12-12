@@ -39,5 +39,10 @@ namespace MediatR.Example.Services
         {
             return await _IGenaricRepo.GetById(id);
         }
+
+        public async Task<bool> Update(Product entity)
+        {
+            return await _IGenaricRepo.Update(entity);
+        }
     }
 }

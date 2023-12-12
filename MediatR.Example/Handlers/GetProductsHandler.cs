@@ -11,7 +11,7 @@ namespace MediatR.Example.Handlers
 
         public GetProductsHandler(IProductAppSerives ProductAppSerives)
         {
-          _ProductAppSerives = ProductAppSerives;
+            _ProductAppSerives = ProductAppSerives;
 
 
         }

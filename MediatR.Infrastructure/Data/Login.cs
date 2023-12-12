@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using MediatR.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using MediatR.Domain.Entities;
 
 namespace MediatR.Infrastructure.Data
 {
@@ -17,28 +18,46 @@ namespace MediatR.Infrastructure.Data
             _context = context;
         }
 
-        public async Task<string> GetUserRole(int id)
+        public async Task<User> GetUserByEmail(string email)
         {
-            var RoleID = await _context.UserRoles.Where(a => a.UserId == id).Select(a => a.RoleId).FirstOrDefaultAsync();
-            var RoleName = await _context.Roles.Where(a => a.id == RoleID).Select(a => a.RoleName).FirstOrDefaultAsync();
-            return RoleName;
+            if (email == null) {
+                return null;
+                    }
+            return await _context.Users.Where(a => a.UserEmail == email).FirstOrDefaultAsync();
         }
 
-        public bool ValidateUser(string username, string password)
+        public async Task<User> GetUserRole(User user)
         {
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+
+            var RoleID = await _context.UserRoles.Where(a => a.UserId == user.id).Select(a => a.RoleId).FirstOrDefaultAsync();
+            var RoleName = await _context.Roles.Where(a => a.id == RoleID).Select(a => a.RoleName).FirstOrDefaultAsync();
+            
+            return user;
+        }
+
+        public bool ValidateUser(string Email, string password)
+        {
+            if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(password))
             {
                 return false;
             }
+            
+          
+            //var user = (from us in _context.Users
+            //            where string.Compare(username, us.UserEmail, StringComparison.OrdinalIgnoreCase) == 0
+            //            && string.Compare(password, us.Password, StringComparison.OrdinalIgnoreCase) == 0
+            //            select us).FirstOrDefault();
 
-
-            var user = (from us in _context.Users
-                        where string.Compare(username, us.UserName, StringComparison.OrdinalIgnoreCase) == 0
-                        && string.Compare(password, us.Password, StringComparison.OrdinalIgnoreCase) == 0
-                        select us).FirstOrDefault();
-
-            return (user != null) ? true : false;
+            var user = _context.Users.FirstOrDefault(u => u.UserEmail == Email && u.Password == password);
+            if (user == null) { 
+                return false;
+            }
+           // var RoleName = GetUserRole(user);
+            
+            return true;
 
         }
+
+   
     }
 }
